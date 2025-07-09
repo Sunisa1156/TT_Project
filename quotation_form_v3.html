@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PP Newmoon - Quotation Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Sarabun', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .form-container {
+            padding: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            position: relative;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            background: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 4px 15px rgba(52,152,219,0.2);
+            transform: translateY(-2px);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .items-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        .items-section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .item-row {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .item-row .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .item-row .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        .item-row input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95em;
+            transition: all 0.3s ease;
+        }
+        
+        .item-row input:focus {
+            border-color: #3498db;
+            box-shadow: 0 2px 8px rgba(52,152,219,0.2);
+        }
+        
+        .item-row label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+        
+        .add-item-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+        
+        .add-item-btn:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+        
+
+        
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52,152,219,0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52,152,219,0.4);
+        }
+        
+        .success-message {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .summary-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding: 5px 0;
+        }
+        
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 1.2em;
+            border-top: 2px solid #3498db;
+            padding-top: 10px;
+            margin-top: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>PP Newmoon</h1>
+            <p>ใบเสนอราคา (Quotation)</p>
+        </div>
+        
+        <div class="form-container">
+            <form id="quotationForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="companyName">ชื่อบริษัท *</label>
+                        <input type="text" id="companyName" name="companyName" 
+                               xpath="//input[@id='companyName']" 
+                               data-testid="company-name-input"
+                               required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="taxId">เลขผู้เสียภาษี *</label>
+                        <input type="text" id="taxId" name="taxId" 
+                               xpath="//input[@id='taxId']"
+                               data-testid="tax-id-input"
+                               required>
+                    </div>
+                    
+                    <div class="form-group full-width">
+                        <label for="address">ที่อยู่ *</label>
+                        <textarea id="address" name="address" 
+                                  xpath="//textarea[@id='address']"
+                                  data-testid="address-input"
+                                  required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contactPerson">ผู้ติดต่อ *</label>
+                        <input type="text" id="contactPerson" name="contactPerson" 
+                               xpath="//input[@id='contactPerson']"
+                               data-testid="contact-person-input"
+                               required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phoneNumber">เบอร์โทรศัพท์ *</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" 
+                               xpath="//input[@id='phoneNumber']"
+                               data-testid="phone-number-input"
+                               required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">อีเมล *</label>
+                        <input type="email" id="email" name="email" 
+                               xpath="//input[@id='email']"
+                               data-testid="email-input"
+                               required>
+                    </div>
+                </div>
+                
+                <div class="items-section">
+                    <h3>รายการสินค้า</h3>
+                    <div id="itemsContainer" xpath="//div[@id='itemsContainer']" data-testid="items-container">
+                        <div class="item-row" data-item-index="0">
+                            <div class="form-group">
+                                <label>ชื่อสินค้า/รายการ</label>
+                                <input type="text" name="itemName[]" placeholder="กรุณากรอกชื่อสินค้าหรือรายการ" 
+                                       xpath="//input[@name='itemName[]'][1]"
+                                       data-testid="item-name-0">
+                            </div>
+                            <div class="form-group">
+                                <label>จำนวน</label>
+                                <input type="number" name="quantity[]" placeholder="กรุณากรอกจำนวน" min="1" 
+                                       xpath="//input[@name='quantity[]'][1]"
+                                       data-testid="item-quantity-0">
+                            </div>
+                            <div class="form-group">
+                                <label>ราคาต่อหน่วย (บาท)</label>
+                                <input type="number" name="unitPrice[]" placeholder="กรุณากรอกราคาต่อหน่วย" min="0" step="0.01" 
+                                       xpath="//input[@name='unitPrice[]'][1]"
+                                       data-testid="item-unit-price-0">
+                            </div>
+                            <div class="form-group">
+                                <label>รวม (บาท)</label>
+                                <input type="number" name="amount[]" placeholder="คำนวณอัตโนมัติ" readonly 
+                                       xpath="//input[@name='amount[]'][1]"
+                                       data-testid="item-amount-0"
+                                       style="background-color: #f8f9fa;">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" class="add-item-btn" onclick="addItem()" 
+                            xpath="//button[@class='add-item-btn']"
+                            data-testid="add-item-btn">เพิ่มรายการ</button>
+                    
+                    <div class="summary-section">
+                        <div class="summary-row">
+                            <span>ยอดรวม:</span>
+                            <span id="subtotal" xpath="//span[@id='subtotal']" data-testid="subtotal">0.00 บาท</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>ภาษีมูลค่าเพิ่ม (7%):</span>
+                            <span id="vat" xpath="//span[@id='vat']" data-testid="vat">0.00 บาท</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>ยอดรวมสุทธิ:</span>
+                            <span id="grandTotal" xpath="//span[@id='grandTotal']" data-testid="grand-total">0.00 บาท</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="remarks">หมายเหตุ</label>
+                    <textarea id="remarks" name="remarks" 
+                              xpath="//textarea[@id='remarks']"
+                              data-testid="remarks-input"></textarea>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary" 
+                            xpath="//button[@type='submit']"
+                            data-testid="save-btn">บันทึกข้อมูล</button>
+                </div>
+                
+                <div class="success-message" id="successMessage" 
+                     xpath="//div[@id='successMessage']"
+                     data-testid="success-message">
+                    บันทึกสำเร็จ
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let itemCounter = 1;
+        
+        // เพิ่มรายการสินค้า
+        function addItem() {
+            const container = document.getElementById('itemsContainer');
+            const newRow = document.createElement('div');
+            newRow.className = 'item-row';
+            newRow.setAttribute('data-item-index', itemCounter);
+            
+            newRow.innerHTML = `
+                <div class="form-group">
+                    <label>ชื่อสินค้า/รายการ</label>
+                    <input type="text" name="itemName[]" placeholder="กรุณากรอกชื่อสินค้าหรือรายการ" 
+                           xpath="//input[@name='itemName[]'][${itemCounter + 1}]"
+                           data-testid="item-name-${itemCounter}">
+                </div>
+                <div class="form-group">
+                    <label>จำนวน</label>
+                    <input type="number" name="quantity[]" placeholder="กรุณากรอกจำนวน" min="1" 
+                           xpath="//input[@name='quantity[]'][${itemCounter + 1}]"
+                           data-testid="item-quantity-${itemCounter}">
+                </div>
+                <div class="form-group">
+                    <label>ราคาต่อหน่วย (บาท)</label>
+                    <input type="number" name="unitPrice[]" placeholder="กรุณากรอกราคาต่อหน่วย" min="0" step="0.01" 
+                           xpath="//input[@name='unitPrice[]'][${itemCounter + 1}]"
+                           data-testid="item-unit-price-${itemCounter}">
+                </div>
+                <div class="form-group">
+                    <label>รวม (บาท)</label>
+                    <input type="number" name="amount[]" placeholder="คำนวณอัตโนมัติ" readonly 
+                           xpath="//input[@name='amount[]'][${itemCounter + 1}]"
+                           data-testid="item-amount-${itemCounter}"
+                           style="background-color: #f8f9fa;">
+                </div>
+            `;
+            
+            container.appendChild(newRow);
+            itemCounter++;
+            
+            // เพิ่ม event listeners สำหรับรายการใหม่
+            addCalculationListeners(newRow);
+        }
+        
+        // ลบรายการสินค้า
+        function removeItem(button) {
+            const container = document.getElementById('itemsContainer');
+            if (container.children.length > 1) {
+                button.parentElement.remove();
+                calculateTotal();
+            }
+        }
+        
+        // คำนวณราคารวม
+        function calculateItemAmount(row) {
+            const quantity = parseFloat(row.querySelector('input[name="quantity[]"]').value) || 0;
+            const unitPrice = parseFloat(row.querySelector('input[name="unitPrice[]"]').value) || 0;
+            const amount = quantity * unitPrice;
+            row.querySelector('input[name="amount[]"]').value = amount.toFixed(2);
+            calculateTotal();
+        }
+        
+        // คำนวณยอดรวมทั้งหมด
+        function calculateTotal() {
+            const amountInputs = document.querySelectorAll('input[name="amount[]"]');
+            let subtotal = 0;
+            
+            amountInputs.forEach(input => {
+                subtotal += parseFloat(input.value) || 0;
+            });
+            
+            const vat = subtotal * 0.07;
+            const grandTotal = subtotal + vat;
+            
+            document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' บาท';
+            document.getElementById('vat').textContent = vat.toFixed(2) + ' บาท';
+            document.getElementById('grandTotal').textContent = grandTotal.toFixed(2) + ' บาท';
+        }
+        
+        // เพิ่ม event listeners สำหรับการคำนวณ
+        function addCalculationListeners(row) {
+            const quantityInput = row.querySelector('input[name="quantity[]"]');
+            const unitPriceInput = row.querySelector('input[name="unitPrice[]"]');
+            
+            quantityInput.addEventListener('input', () => calculateItemAmount(row));
+            unitPriceInput.addEventListener('input', () => calculateItemAmount(row));
+        }
+        
+        // เพิ่ม event listeners สำหรับรายการแรก
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstRow = document.querySelector('.item-row');
+            addCalculationListeners(firstRow);
+            
+            // คำนวณยอดรวมเริ่มต้น
+            calculateTotal();
+        });
+        
+        // จัดการ form submission
+        document.getElementById('quotationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // ตรวจสอบข้อมูลที่จำเป็น
+            const companyName = document.getElementById('companyName').value;
+            const taxId = document.getElementById('taxId').value;
+            const address = document.getElementById('address').value;
+            const contactPerson = document.getElementById('contactPerson').value;
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const email = document.getElementById('email').value;
+            
+            if (!companyName || !taxId || !address || !contactPerson || !phoneNumber || !email) {
+                alert('กรุณากรอกข้อมูลที่จำเป็น (ช่องที่มีเครื่องหมาย *)');
+                return;
+            }
+            
+            // ตรวจสอบรายการสินค้า
+            const itemRows = document.querySelectorAll('.item-row');
+            let hasValidItem = false;
+            
+            itemRows.forEach(row => {
+                const itemName = row.querySelector('input[name="itemName[]"]').value;
+                const quantity = row.querySelector('input[name="quantity[]"]').value;
+                const unitPrice = row.querySelector('input[name="unitPrice[]"]').value;
+                
+                if (itemName && quantity && unitPrice) {
+                    hasValidItem = true;
+                }
+            });
+            
+            if (!hasValidItem) {
+                alert('กรุณากรอกข้อมูลรายการสินค้าอย่างน้อย 1 รายการ');
+                return;
+            }
+            
+            // แสดงข้อความสำเร็จ
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            
+            // ซ่อนข้อความหลังจาก 3 วินาที
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+            
+            // Log ข้อมูลในคอนโซล (สำหรับการทดสอบ)
+            console.log('บันทึกข้อมูลสำเร็จ:', {
+                companyName,
+                taxId,
+                address,
+                contactPerson,
+                phoneNumber,
+                email,
+                remarks: document.getElementById('remarks').value,
+                items: Array.from(itemRows).map(row => ({
+                    name: row.querySelector('input[name="itemName[]"]').value,
+                    quantity: row.querySelector('input[name="quantity[]"]').value,
+                    unitPrice: row.querySelector('input[name="unitPrice[]"]').value,
+                    amount: row.querySelector('input[name="amount[]"]').value
+                })).filter(item => item.name && item.quantity && item.unitPrice),
+                subtotal: document.getElementById('subtotal').textContent,
+                vat: document.getElementById('vat').textContent,
+                grandTotal: document.getElementById('grandTotal').textContent
+            });
+        });
+
+    </script>
+</body>
+</html>
